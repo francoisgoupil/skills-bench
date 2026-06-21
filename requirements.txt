@@ -1,0 +1,3 @@
+# Streamlit Community Cloud installs from this file.
+-e .
+plotly>=5.20

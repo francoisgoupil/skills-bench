@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+runs.db
+data/runs.db
+benchmark/
+.skore/
+.skore-test/
+*.egg-info/
+dist/
+build/
+.streamlit/secrets.toml
+.DS_Store
