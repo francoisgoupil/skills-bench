@@ -88,45 +88,6 @@ Failed LLM calls abort the run (no silent fallback). Use `--allow-fallback` only
 Use `--offline` to log metrics locally (to `runs.db`) instead of Skore Hub.
 Use `--baseline-only` to smoke-test the scoring pipeline without calling any LLM.
 
-## Publish on GitHub
-
-Secrets stay **out of git** (`.env`, `runs.db`, `.streamlit/secrets.toml` are gitignored).
-Only `.env.example` and `.streamlit/secrets.toml.example` are committed as templates.
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: skills-bench benchmark and dashboard"
-gh repo create skills-bench --public --source=. --remote=origin --push
-```
-
-If the repo already exists on your account, use `git remote add origin …` and `git push -u origin main`.
-
-## Deploy dashboard (Streamlit Community Cloud)
-
-1. Push this repo to GitHub (see above).
-2. Open [share.streamlit.io](https://share.streamlit.io) → **New app**.
-3. Point to your repo, branch `main`, main file path **`dashboard/app.py`**.
-4. Under **Advanced settings → Secrets**, paste (from `.streamlit/secrets.toml.example`):
-
-```toml
-SKORE_WORKSPACE = "benchmark"
-SKORE_HUB_API_KEY = "your-skore-hub-api-key"
-SKORE_HUB_URI = "https://api.skore.probabl.ai"
-```
-
-Create the API key at [skore.probabl.ai/account](https://skore.probabl.ai/account).  
-**Do not** put LLM keys (`ANTHROPIC_API_KEY`, etc.) in Streamlit secrets — the dashboard only reads Skore Hub + the bundled `data/runs.public.db`.
-
-The app ships with **`data/runs.public.db`** (benchmark results only, no secrets) so token/cost columns work on Cloud without your local `runs.db`. Hub merge adds fresh ROC AUC when credentials are set.
-
-Local Streamlit secrets (optional):
-
-```bash
-cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-# edit .streamlit/secrets.toml — file is gitignored
-streamlit run dashboard/app.py
-```
 
 ## The one thing left to build
 
